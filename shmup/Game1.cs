@@ -2,6 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using shmup.Players;
+using shmup.Enemies;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace shmup
 {
@@ -14,7 +18,8 @@ namespace shmup
         private SpriteBatch spriteBatch;
         private Player player;
         private PlayerController playerController;
-        private BulletCreator bulletCreator;
+        private BulletManager bulletManager;
+        private Enemy enemy;
 
         public Game1()
         {
@@ -34,9 +39,15 @@ namespace shmup
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            // player stuff
             player = new Player();
             playerController = new PlayerController();
-            bulletCreator = new BulletCreator();
+            bulletManager = new BulletManager();
+
+            //enemy stuff
+            enemy = new Enemy();
+
             base.Initialize();
         }
 
@@ -51,14 +62,32 @@ namespace shmup
 
             // TODO: use this.Content to load your game content here
             Vector2 mapDimensions = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+            // bullet related content
             Texture2D bulletTexture = Content.Load<Texture2D>("bullet");
-            
-            bulletCreator.Initialize(bulletTexture, 5, mapDimensions, true);
+            bulletManager.Initialize(bulletTexture, 5, mapDimensions, true);
+
+            // player related content
             Vector2 startPosition = new Vector2((GraphicsDevice.Viewport.Width / 2) - 16, GraphicsDevice.Viewport.Height - 50);
             Texture2D texture = Content.Load<Texture2D>("player");
-            player.Initialize(texture, startPosition, bulletCreator);
-
+            player.Initialize(texture, startPosition, bulletManager);
             playerController.Initialize(Keys.Left, Keys.Right, Keys.Up, Keys.Down, Keys.Z, mapDimensions, player);
+
+            // enemy related content
+            Texture2D enemyTexture = Content.Load<Texture2D>("enemy");
+            Vector2 enemyStartPosition = startPosition - new Vector2(0, 100);
+
+            // creating a movement list, is there a more elegant way?
+            List<Tuple<Vector2, int>> movement = new List<Tuple<Vector2, int>>();
+            float s = (float)Math.Sqrt(2);
+            movement.Add(new Tuple<Vector2, int>(new Vector2(2, 0), 500));
+            movement.Add(new Tuple<Vector2, int>(new Vector2(s, -s), 500));
+            movement.Add(new Tuple<Vector2, int>(new Vector2(0, -2), 500));
+            movement.Add(new Tuple<Vector2, int>(new Vector2(-s, -s), 500));
+            movement.Add(new Tuple<Vector2, int>(new Vector2(-2, 0), 500));
+            movement.Add(new Tuple<Vector2, int>(new Vector2(-s, s), 500));
+            movement.Add(new Tuple<Vector2, int>(new Vector2(0, 2), 500));
+            enemy.Initialize(enemyTexture, enemyStartPosition, bulletManager, mapDimensions, movement);
         }
 
         /// <summary>
@@ -82,7 +111,8 @@ namespace shmup
 
             // TODO: Add your update logic here
             playerController.Update(gameTime);
-            bulletCreator.Update(gameTime);
+            bulletManager.Update(gameTime);
+            if (enemy.Exists) enemy.Update(gameTime);   // move to EnemyManager
             base.Update(gameTime);
         }
 
@@ -96,8 +126,9 @@ namespace shmup
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            bulletCreator.Draw(spriteBatch);
+            bulletManager.Draw(spriteBatch);
             player.Draw(spriteBatch);
+            if (enemy.Exists) enemy.Draw(spriteBatch);    // move to EnemyManager
             spriteBatch.End();
             base.Draw(gameTime);
         }

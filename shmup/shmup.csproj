@@ -39,10 +39,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
-    <Compile Include="BulletCreator.cs" />
+    <Compile Include="BulletManager.cs" />
+    <Compile Include="Character.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
+    <Compile Include="Enemies\EnemyManager.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="PlayerController.cs" />
+    <Compile Include="Players\Player.cs" />
+    <Compile Include="Players\PlayerController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

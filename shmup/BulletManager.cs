@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace shmup
 {
-    class BulletCreator
+    class BulletManager
     {
         private Texture2D bulletTexture;
         private int bulletSpeed;
@@ -22,6 +22,8 @@ namespace shmup
             this.bulletSpeed = bulletSpeed;
             this.mapDimensions = mapDimensions;
             this.goodSide = goodSide;
+            //List<Tuple<Vector2, int>> list = new List<Tuple<Vector2, int>>();
+            //list.Add(new Tuple<Vector2, int>(mapDimensions, 5));
         }
 
         public void Update(GameTime gameTime)
