@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace shmup
 {
@@ -13,6 +14,7 @@ namespace shmup
         private SpriteBatch spriteBatch;
         private Player player;
         private PlayerController playerController;
+        private BulletCreator bulletCreator;
 
         public Game1()
         {
@@ -34,6 +36,7 @@ namespace shmup
             // TODO: Add your initialization logic here
             player = new Player();
             playerController = new PlayerController();
+            bulletCreator = new BulletCreator();
             base.Initialize();
         }
 
@@ -47,11 +50,14 @@ namespace shmup
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            Vector2 mapDimensions = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            Texture2D bulletTexture = Content.Load<Texture2D>("bullet");
+            
+            bulletCreator.Initialize(bulletTexture, 5, mapDimensions, true);
             Vector2 startPosition = new Vector2((GraphicsDevice.Viewport.Width / 2) - 16, GraphicsDevice.Viewport.Height - 50);
             Texture2D texture = Content.Load<Texture2D>("player");
-            player.Initialize(texture, startPosition);
+            player.Initialize(texture, startPosition, bulletCreator);
 
-            Vector2 mapDimensions = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             playerController.Initialize(Keys.Left, Keys.Right, Keys.Up, Keys.Down, Keys.Z, mapDimensions, player);
         }
 
@@ -76,6 +82,7 @@ namespace shmup
 
             // TODO: Add your update logic here
             playerController.Update(gameTime);
+            bulletCreator.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -89,6 +96,7 @@ namespace shmup
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
+            bulletCreator.Draw(spriteBatch);
             player.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);

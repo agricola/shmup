@@ -15,6 +15,7 @@ namespace shmup
         private Texture2D texture;
         private int movementSpeed = 5;
         private Vector2 position;
+        private BulletCreator bulletCreator;
 
         public int Height
         {
@@ -31,10 +32,11 @@ namespace shmup
         }
 
 
-        public void Initialize(Texture2D texture, Vector2 startPosition)
+        public void Initialize(Texture2D texture, Vector2 startPosition, BulletCreator bulletCreator)
         {
             this.texture = texture;
             position = startPosition;
+            this.bulletCreator = bulletCreator;
         }
 
         public void Update(GameTime gameTime)
@@ -50,6 +52,12 @@ namespace shmup
         {
             position.X += xDistance * movementSpeed;
             position.Y += yDistance * movementSpeed;
+        }
+
+        public void FireBullet()
+        {
+            Vector2 direction = new Vector2(0, -1);
+            bulletCreator.FireBullet(position, direction);
         }
     }
 }

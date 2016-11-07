@@ -11,6 +11,8 @@ namespace shmup
 {
     class PlayerController
     {
+        private const int Cooldown = 500;
+
         private Player player;
 
         // Input keys
@@ -26,18 +28,23 @@ namespace shmup
         // current state (keys pressed) of keyboard
         private KeyboardState keyboardState;
 
+        // cooldowns
+        private double shootCooldown = 0;
+
         public void Initialize(Keys moveLeftKey, Keys moveRightKey, Keys moveUpKey, Keys moveDownKey, Keys shootKey, Vector2 mapDimensions, Player player)
         {
             this.moveLeftKey = moveLeftKey;
             this.moveRightKey = moveRightKey;
             this.moveUpKey = moveUpKey;
             this.moveDownKey = moveDownKey;
+            this.shootKey = shootKey;
             this.mapDimensions = mapDimensions;
             this.player = player;
         }
 
         public void Update(GameTime gameTime)
         {
+            shootCooldown -= shootCooldown > 0 ? gameTime.ElapsedGameTime.TotalMilliseconds : 0;
             keyboardState = Keyboard.GetState();
             if (keyboardState.IsKeyDown(moveLeftKey))
             {
@@ -54,6 +61,11 @@ namespace shmup
             if (keyboardState.IsKeyDown(moveDownKey))
             {
                 player.MovePlayer(0, 1);
+            }
+            if (keyboardState.IsKeyDown(shootKey) && shootCooldown <= 0)
+            {
+                player.FireBullet();
+                shootCooldown = Cooldown;
             }
 
             // make sure the player is within the map
