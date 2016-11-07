@@ -12,10 +12,14 @@ namespace shmup
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Player player;
+        private PlayerController playerController;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 480;
+            graphics.PreferredBackBufferHeight = 640;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -29,6 +33,7 @@ namespace shmup
         {
             // TODO: Add your initialization logic here
             player = new Player();
+            playerController = new PlayerController();
             base.Initialize();
         }
 
@@ -45,6 +50,9 @@ namespace shmup
             Vector2 startPosition = new Vector2((GraphicsDevice.Viewport.Width / 2) - 16, GraphicsDevice.Viewport.Height - 50);
             Texture2D texture = Content.Load<Texture2D>("player");
             player.Initialize(texture, startPosition);
+
+            Vector2 mapDimensions = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            playerController.Initialize(Keys.Left, Keys.Right, Keys.Up, Keys.Down, Keys.Z, mapDimensions, player);
         }
 
         /// <summary>
@@ -67,7 +75,7 @@ namespace shmup
                 Exit();
 
             // TODO: Add your update logic here
-
+            playerController.Update(gameTime);
             base.Update(gameTime);
         }
 
