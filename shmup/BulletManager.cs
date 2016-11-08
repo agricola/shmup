@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using shmup.Players;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,15 @@ namespace shmup
         private Vector2 mapDimensions;
         private bool goodSide;
         private List<Bullet> bullets = new List<Bullet>();
+        private Player player;
 
-        public void Initialize(Texture2D bulletTexture, int bulletSpeed, Vector2 mapDimensions, bool goodSide)
+        public void Initialize(Texture2D bulletTexture, int bulletSpeed, Vector2 mapDimensions, bool goodSide, Player player)
         {
             this.bulletTexture = bulletTexture;
             this.bulletSpeed = bulletSpeed;
             this.mapDimensions = mapDimensions;
             this.goodSide = goodSide;
+            this.player = player;
             //List<Tuple<Vector2, int>> list = new List<Tuple<Vector2, int>>();
             //list.Add(new Tuple<Vector2, int>(mapDimensions, 5));
         }
@@ -48,6 +51,15 @@ namespace shmup
         {
             Bullet bullet = new Bullet();
             bullet.Initialize(bulletTexture, position, direction, bulletSpeed, goodSide, mapDimensions);
+            bullets.Add(bullet);
+        }
+
+        public void EnemyFireBullet(Vector2 position)
+        {
+            Bullet bullet = new Bullet();
+            Vector2 direction = player.Position - position;
+            direction.Normalize();
+            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, !goodSide, mapDimensions);
             bullets.Add(bullet);
         }
     }

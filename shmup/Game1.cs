@@ -65,7 +65,7 @@ namespace shmup
 
             // bullet related content
             Texture2D bulletTexture = Content.Load<Texture2D>("bullet");
-            bulletManager.Initialize(bulletTexture, 5, mapDimensions, true);
+            bulletManager.Initialize(bulletTexture, 5, mapDimensions, true, player);
 
             // player related content
             Vector2 startPosition = new Vector2((GraphicsDevice.Viewport.Width / 2) - 16, GraphicsDevice.Viewport.Height - 50);
@@ -78,16 +78,16 @@ namespace shmup
             Vector2 enemyStartPosition = startPosition - new Vector2(0, 100);
 
             // creating a movement list, is there a more elegant way?
-            List<Tuple<Vector2, int>> movement = new List<Tuple<Vector2, int>>();
+            List<EnemyAction> actionQueue = new List<EnemyAction>();
             float s = (float)Math.Sqrt(2);
-            movement.Add(new Tuple<Vector2, int>(new Vector2(2, 0), 500));
-            movement.Add(new Tuple<Vector2, int>(new Vector2(s, -s), 500));
-            movement.Add(new Tuple<Vector2, int>(new Vector2(0, -2), 500));
-            movement.Add(new Tuple<Vector2, int>(new Vector2(-s, -s), 500));
-            movement.Add(new Tuple<Vector2, int>(new Vector2(-2, 0), 500));
-            movement.Add(new Tuple<Vector2, int>(new Vector2(-s, s), 500));
-            movement.Add(new Tuple<Vector2, int>(new Vector2(0, 2), 500));
-            enemy.Initialize(enemyTexture, enemyStartPosition, bulletManager, mapDimensions, movement);
+            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), false); }));
+            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(s, -s), true); }));
+            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(0, -2), false); }));
+            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-s, -s), true); }));
+            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-2, 0), false); }));
+            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-s, s), true); }));
+            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(0, 2), false); }));
+            enemy.Initialize(enemyTexture, enemyStartPosition, bulletManager, mapDimensions, actionQueue);
         }
 
         /// <summary>

@@ -42,6 +42,7 @@
     <Compile Include="BulletManager.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="Enemies\Enemy.cs" />
+    <Compile Include="Enemies\EnemyAction.cs" />
     <Compile Include="Enemies\EnemyManager.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Players\Player.cs" />
