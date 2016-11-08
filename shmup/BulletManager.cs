@@ -62,5 +62,21 @@ namespace shmup
             bullet.Initialize(bulletTexture, position, direction, bulletSpeed, !goodSide, mapDimensions);
             bullets.Add(bullet);
         }
+
+        public void CheckCollisionWithBullets(Character character)
+        {
+            Rectangle characterCollider = new Rectangle((int)character.Position.X, (int)character.Position.Y, character.Width, character.Height);
+            foreach (var bullet in bullets)
+            {
+                Rectangle bulletCollider = new Rectangle((int)bullet.Position.X, (int)bullet.Position.Y, bullet.Width, bullet.Height);
+                if (bulletCollider.Intersects(characterCollider))
+                {
+                    if (bullet.IsGood != character.IsGood)
+                    {
+                        character.TakeDamage(bullet.Damage);
+                    }
+                }
+            }
+        }
     }
 }

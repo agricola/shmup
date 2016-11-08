@@ -45,6 +45,7 @@
     <Compile Include="Enemies\EnemyAction.cs" />
     <Compile Include="Enemies\EnemyManager.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="LevelManager.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayerController.cs" />
     <Compile Include="Program.cs" />

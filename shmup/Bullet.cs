@@ -17,11 +17,50 @@ namespace shmup
         private int movementSpeed;
         private Vector2 mapDimensions;
         private bool exists;
-        private bool goodSide;
+        private bool isGood;
+        private int damage = 100;
 
+        public bool IsGood
+        {
+            get
+            {
+                return isGood;
+            }
+        }
         public bool Exists
         {
-            get { return exists; }
+            get
+            {
+                return exists;
+            }
+        }
+        public int Height
+        {
+            get
+            {
+                return texture.Height;
+            }
+        }
+        public int Width
+        {
+            get
+            {
+                return texture.Width;
+            }
+        }
+        public Vector2 Position
+        {
+            get
+            {
+                return position;
+            }
+        }
+        public int Damage
+        {
+            get
+            {
+                return damage;
+            }
         }
 
         public void Initialize(Texture2D texture, Vector2 position, Vector2 direction, int movementSpeed, bool goodSide, Vector2 mapDimensions)
@@ -32,7 +71,7 @@ namespace shmup
             this.direction = direction;
             this.movementSpeed = movementSpeed;
             this.mapDimensions = mapDimensions;
-            this.goodSide = goodSide;
+            this.isGood = goodSide;
             exists = true;
         }
 

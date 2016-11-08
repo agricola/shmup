@@ -14,7 +14,24 @@ namespace shmup
         protected int movementSpeed = 5;
         protected Vector2 position;
         protected BulletManager bulletManager;
+        protected int health = 100;
+        protected bool isGood = false;
+        protected bool exists = true;
 
+        public bool IsGood
+        {
+            get
+            {
+                return isGood;
+            }
+        }
+        public bool Exists
+        {
+            get
+            {
+                return exists;
+            }
+        }
         public int Height
         {
             get { return texture.Height; }
@@ -32,6 +49,15 @@ namespace shmup
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+        }
+
+        public void TakeDamage(int damage)
+        {
+            health -= damage;
+            if (health <= 0)
+            {
+                exists = false;
+            }
         }
     }
 }

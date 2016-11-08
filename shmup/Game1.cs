@@ -20,6 +20,7 @@ namespace shmup
         private PlayerController playerController;
         private BulletManager bulletManager;
         private Enemy enemy;
+        private LevelManager levelManager;
 
         public Game1()
         {
@@ -48,6 +49,8 @@ namespace shmup
             //enemy stuff
             enemy = new Enemy();
 
+            levelManager = new LevelManager();
+
             base.Initialize();
         }
 
@@ -75,19 +78,8 @@ namespace shmup
 
             // enemy related content
             Texture2D enemyTexture = Content.Load<Texture2D>("enemy");
-            Vector2 enemyStartPosition = startPosition - new Vector2(0, 100);
 
-            // creating a movement list, is there a more elegant way?
-            List<EnemyAction> actionQueue = new List<EnemyAction>();
-            float s = (float)Math.Sqrt(2);
-            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), false); }));
-            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(s, -s), true); }));
-            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(0, -2), false); }));
-            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-s, -s), true); }));
-            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-2, 0), false); }));
-            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-s, s), true); }));
-            actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(0, 2), false); }));
-            enemy.Initialize(enemyTexture, enemyStartPosition, bulletManager, mapDimensions, actionQueue);
+            levelManager.Initialize(player, bulletManager, enemyTexture, mapDimensions);
         }
 
         /// <summary>
@@ -110,9 +102,9 @@ namespace shmup
                 Exit();
 
             // TODO: Add your update logic here
-            playerController.Update(gameTime);
+            if (player.Exists) playerController.Update(gameTime);
             bulletManager.Update(gameTime);
-            if (enemy.Exists) enemy.Update(gameTime);   // move to EnemyManager
+            levelManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -127,8 +119,8 @@ namespace shmup
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             bulletManager.Draw(spriteBatch);
-            player.Draw(spriteBatch);
-            if (enemy.Exists) enemy.Draw(spriteBatch);    // move to EnemyManager
+            if (player.Exists) player.Draw(spriteBatch);
+            levelManager.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }

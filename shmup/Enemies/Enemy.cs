@@ -25,15 +25,7 @@ namespace shmup.Enemies
         // checks if it is a new Action so it doesnt spam bullets during fire action
         private EnemyAction previousAction = null;
 
-        private bool exists = true;
 
-        public bool Exists
-        {
-            get
-            {
-                return exists;
-            }
-        }
 
         public void Initialize(
             Texture2D texture,
@@ -47,6 +39,7 @@ namespace shmup.Enemies
             this.bulletManager = bulletManager;
             this.mapDimensions = mapDimensions;
             this.actionQueue = actionQueue;
+            isGood = false;
         }
 
         public void Update(GameTime gameTime)
