@@ -9,52 +9,11 @@ using System.Threading.Tasks;
 
 namespace shmup
 {
-    class Bullet
+    class Bullet : GameObject
     {
-        private Texture2D texture;
-        private Vector2 position;
-        private Vector2 direction;
         private int movementSpeed;
-        private Vector2 mapDimensions;
-        private bool exists;
-        private bool isGood;
         private int damage = 100;
 
-        public bool IsGood
-        {
-            get
-            {
-                return isGood;
-            }
-        }
-        public bool Exists
-        {
-            get
-            {
-                return exists;
-            }
-        }
-        public int Height
-        {
-            get
-            {
-                return texture.Height;
-            }
-        }
-        public int Width
-        {
-            get
-            {
-                return texture.Width;
-            }
-        }
-        public Vector2 Position
-        {
-            get
-            {
-                return position;
-            }
-        }
         public int Damage
         {
             get

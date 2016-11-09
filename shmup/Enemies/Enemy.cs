@@ -5,27 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace shmup.Enemies
 {
     class Enemy : Character
     {
-        // list of tuples to represent movement: Vector2 is direction, int is delay (aka how long it moves for)
-        //private List<Tuple<Vector2, int>> movement = new List<Tuple<Vector2, int>>();
-
         // last time movement changed, used to keep track of time
         private double previousMoveTime = 0;
-
-        // map bounds
-        private Vector2 mapDimensions;
 
         // queue of actions for the enemy to perform
         private List<EnemyAction> actionQueue;
 
         // checks if it is a new Action so it doesnt spam bullets during fire action
         private EnemyAction previousAction = null;
-
-
 
         public void Initialize(
             Texture2D texture,
@@ -40,10 +33,12 @@ namespace shmup.Enemies
             this.mapDimensions = mapDimensions;
             this.actionQueue = actionQueue;
             isGood = false;
+            exists = true;
         }
 
         public void Update(GameTime gameTime)
         {
+            Debug.WriteLine("exists");
             // move enemy
             double totalMs = gameTime.TotalGameTime.TotalMilliseconds;
             if (totalMs - previousMoveTime > actionQueue[0].Delay && actionQueue.Count > 1)

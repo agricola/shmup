@@ -2,49 +2,18 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace shmup
 {
-    abstract class Character
+    abstract class Character : GameObject
     {
-        protected Texture2D texture;
         protected int movementSpeed = 5;
-        protected Vector2 position;
         protected BulletManager bulletManager;
         protected int health = 100;
-        protected bool isGood = false;
-        protected bool exists = true;
-
-        public bool IsGood
-        {
-            get
-            {
-                return isGood;
-            }
-        }
-        public bool Exists
-        {
-            get
-            {
-                return exists;
-            }
-        }
-        public int Height
-        {
-            get { return texture.Height; }
-        }
-        public int Width
-        {
-            get { return texture.Width; }
-        }
-        public Vector2 Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
 
         public void Draw(SpriteBatch spriteBatch)
         {
