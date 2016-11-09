@@ -4,6 +4,7 @@ using shmup.Enemies;
 using shmup.Players;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace shmup
         private BulletManager bulletManager;
         private Vector2 mapDimensions;
         private double previousSpawnTime = 0;
+        private Random random;
 
         public void Initialize(Player player, BulletManager bulletManager, Texture2D enemyTexture, Vector2 mapDimensions)
         {
@@ -41,6 +43,7 @@ namespace shmup
             this.bulletManager = bulletManager;
             this.enemyTexture = enemyTexture;
             this.mapDimensions = mapDimensions;
+            random = new Random();
             CreateEnemySpawns();
         }
 
@@ -63,8 +66,7 @@ namespace shmup
                 //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-2, 0), false); }));
                 //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-s, s), true); }));
                 //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(0, 2), false); }));
-
-                Vector2 enemyStartPosition = new Vector2(50, 100);
+                Vector2 enemyStartPosition = new Vector2(-50, random.Next(50, 400));
                 Enemy enemy = new Enemy();
                 EnemySpawn enemySpawn = new EnemySpawn(enemyTexture, enemyStartPosition, actionQueue, 3000);
                 enemySpawnQueue.Add(enemySpawn);

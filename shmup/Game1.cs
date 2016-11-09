@@ -102,7 +102,10 @@ namespace shmup
                 Exit();
 
             // TODO: Add your update logic here
-            if (player.Exists) playerController.Update(gameTime);
+            if (player.Exists)
+            {
+                playerController.Update(gameTime);
+            }
             bulletManager.Update(gameTime);
             levelManager.Update(gameTime);
             base.Update(gameTime);

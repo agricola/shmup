@@ -20,6 +20,9 @@ namespace shmup.Enemies
         // checks if it is a new Action so it doesnt spam bullets during fire action
         private EnemyAction previousAction = null;
 
+        // allows the enemy to come from off screen
+        private bool isActive = false;
+
         public void Initialize(
             Texture2D texture,
             Vector2 startPosition,
@@ -38,7 +41,27 @@ namespace shmup.Enemies
 
         public void Update(GameTime gameTime)
         {
-            Debug.WriteLine("exists");
+            HandleActionQueue(gameTime);
+
+            if (isActive)
+            {
+                // remove enemy if they exit screen
+                exists = IsOnScreen();
+            }
+            else
+            {
+                // activate enemy when they enter screen
+                isActive = IsOnScreen();
+            }
+        }
+
+        private bool IsOnScreen()
+        {
+            return (position.X < -Width || position.X > mapDimensions.X || position.Y < -Height || position.Y > mapDimensions.Y) ? false : true;
+        }
+
+        private void HandleActionQueue(GameTime gameTime)
+        {
             // move enemy
             double totalMs = gameTime.TotalGameTime.TotalMilliseconds;
             if (totalMs - previousMoveTime > actionQueue[0].Delay && actionQueue.Count > 1)
@@ -49,15 +72,14 @@ namespace shmup.Enemies
             EnemyAction currentAction = actionQueue[0];
             Tuple<Vector2, bool> actionTuple = currentAction.Execute(position);
             position = actionTuple.Item1;
+
+            // fire bullets
             bool shoot = actionTuple.Item2;
             if (shoot && currentAction != previousAction)
             {
                 FireBullet();
             }
             previousAction = currentAction;
-
-            // remove enemy if they exit screen
-            exists = (position.X < 0 || position.X > mapDimensions.X || position.Y < 0 || position.Y > mapDimensions.Y) ? false : true;
         }
 
         public void FireBullet()
