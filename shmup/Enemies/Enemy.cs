@@ -12,7 +12,7 @@ namespace shmup.Enemies
     class Enemy : Character
     {
         // last time movement changed, used to keep track of time
-        private double previousMoveTime = 0;
+        private double? previousMoveTime = null;
 
         // queue of actions for the enemy to perform
         private List<EnemyAction> actionQueue;
@@ -62,11 +62,9 @@ namespace shmup.Enemies
 
         private void HandleActionQueue(GameTime gameTime)
         {
-            // move enemy
             double totalMs = gameTime.TotalGameTime.TotalMilliseconds;
-            if (totalMs - previousMoveTime > actionQueue[0].Delay && actionQueue.Count > 1)
+            if (previousMoveTime == null)
             {
-                actionQueue.RemoveAt(0);
                 previousMoveTime = totalMs;
             }
             EnemyAction currentAction = actionQueue[0];
@@ -77,7 +75,14 @@ namespace shmup.Enemies
             bool shoot = actionTuple.Item2;
             if (shoot && currentAction != previousAction)
             {
+                Debug.WriteLine("shoot");
                 FireBullet();
+            }
+            // move enemy
+            if (totalMs - previousMoveTime > actionQueue[0].Delay && actionQueue.Count > 1)
+            {
+                actionQueue.RemoveAt(0);
+                previousMoveTime = totalMs;
             }
             previousAction = currentAction;
         }

@@ -57,15 +57,9 @@ namespace shmup
                 float s = (float)Math.Sqrt(2);
                 // first delay doesnt matter, needs fixing
                 actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), false); }));
+                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), true); }));
+                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), true); }));
                 actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), false); }));
-                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), true); }));
-                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), true); }));
-                //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(s, -s), true); }));
-                //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(0, -2), false); }));
-                //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-s, -s), true); }));
-                //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-2, 0), false); }));
-                //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(-s, s), true); }));
-                //actionQueue.Add(new EnemyAction(500, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(0, 2), false); }));
                 Vector2 enemyStartPosition = new Vector2(-50, random.Next(50, 400));
                 Enemy enemy = new Enemy();
                 EnemySpawn enemySpawn = new EnemySpawn(enemyTexture, enemyStartPosition, actionQueue, 3000);
