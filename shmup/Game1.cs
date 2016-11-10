@@ -110,6 +110,7 @@ namespace shmup
             }
             bulletManager.Update(gameTime);
             levelManager.Update(gameTime);
+
             base.Update(gameTime);
         }
 

@@ -56,12 +56,11 @@ namespace shmup
             bullets.Add(bullet);
         }
 
-        public void EnemyFireBullet(Character character)
+        public void EnemyFireBullet(Character character, int bulletSpeed)
         {
             Bullet bullet = new Bullet();
             Vector2 position = character.CenterPosition;
-            Vector2 direction = player.Position - position;
-            direction.Normalize();
+            Vector2 direction = Vector2.Normalize(player.Position - position);
             bullet.Initialize(bulletTexture, position, direction, bulletSpeed, !goodSide, mapDimensions, 1.0f, 0.75f);
             bullets.Add(bullet);
         }

@@ -15,14 +15,16 @@ namespace shmup
     {
         public Texture2D EnemyTexture { get; private set; } //in future maybe have different enemy values instead of texture
         public Vector2 Position { get; private set; }
-        public List<EnemyAction> ActionQueue { get; private set; }
+        public List<Vector2> MoveQueue { get; private set; }
+        public List<int> ShootQueue { get; private set; }
         public int SpawnDelay { get; private set; }
 
-        public EnemySpawn(Texture2D enemyTexture, Vector2 position, List<EnemyAction> actionQueue, int spawnTime)
+        public EnemySpawn(Texture2D enemyTexture, Vector2 position, List<Vector2> moveQueue, List<int> shootQueue, int spawnTime)
         {
             EnemyTexture = enemyTexture;
             Position = position;
-            ActionQueue = actionQueue;
+            MoveQueue = moveQueue;
+            ShootQueue = shootQueue;
             SpawnDelay = spawnTime;
         }
     }
@@ -53,16 +55,13 @@ namespace shmup
 
             for (int i = 0; i < 5; i++)
             {
-                List<EnemyAction> actionQueue = new List<EnemyAction>();
                 float s = (float)Math.Sqrt(2);
-                // first delay doesnt matter, needs fixing
-                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), false); }));
-                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), true); }));
-                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), true); }));
-                actionQueue.Add(new EnemyAction(1000, (Vector2 pos) => { return new Tuple<Vector2, bool>(pos + new Vector2(2, 0), false); }));
-                Vector2 enemyStartPosition = new Vector2(-50, random.Next(50, 400));
-                Enemy enemy = new Enemy();
-                EnemySpawn enemySpawn = new EnemySpawn(enemyTexture, enemyStartPosition, actionQueue, 3000);
+                int lat = 0;
+                Vector2 enemyStartPosition = new Vector2(-50, lat);
+                List<Vector2> moveQueue = new List<Vector2>() { new Vector2(mapDimensions.X / 2, 200), new Vector2(mapDimensions.X + 100, 0) };
+                List<int> shootQueue = new List<int>() { 1000, 300, 300, 300, 1000, 300, 300, 300 };
+                //Enemy enemy = new Enemy();
+                EnemySpawn enemySpawn = new EnemySpawn(enemyTexture, enemyStartPosition, moveQueue, shootQueue, 1000);
                 enemySpawnQueue.Add(enemySpawn);
             }
         }
@@ -70,7 +69,7 @@ namespace shmup
         private void CreateEnemy(EnemySpawn enemySpawn)
         {
             Enemy enemy = new Enemy();
-            enemy.Initialize(enemySpawn.EnemyTexture, enemySpawn.Position, bulletManager, mapDimensions, enemySpawn.ActionQueue);
+            enemy.Initialize(enemySpawn.EnemyTexture, enemySpawn.Position, bulletManager, mapDimensions, enemySpawn.MoveQueue, enemySpawn.ShootQueue);
             enemies.Add(enemy);
         }
 

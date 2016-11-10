@@ -28,7 +28,6 @@ namespace shmup
             this.scale = scale;
             this.position = position;
             this.position = Vector2.Subtract(position, new Vector2(Width / 2, Height / 2));
-            direction.Normalize();
             this.direction = direction;
             this.movementSpeed = movementSpeed;
             this.mapDimensions = mapDimensions;

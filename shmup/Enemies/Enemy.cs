@@ -12,29 +12,30 @@ namespace shmup.Enemies
     class Enemy : Character
     {
         // last time movement changed, used to keep track of time
-        private double? previousMoveTime = null;
-
-        // queue of actions for the enemy to perform
-        private List<EnemyAction> actionQueue;
-
-        // checks if it is a new Action so it doesnt spam bullets during fire action
-        private EnemyAction previousAction = null;
+        private double? previousShootTime = null;
 
         // allows the enemy to come from off screen
         private bool isActive = false;
+
+        private List<Vector2> moveQueue;
+
+        // delay and bullet type (possibly make this its own type)
+        private List<int> shootQueue;
 
         public void Initialize(
             Texture2D texture,
             Vector2 startPosition,
             BulletManager bulletManager,
             Vector2 mapDimensions,
-            List<EnemyAction> actionQueue)
+            List<Vector2> moveQueue,
+            List<int> shootQueue)
         {
             this.texture = texture;
             position = startPosition;
             this.bulletManager = bulletManager;
             this.mapDimensions = mapDimensions;
-            this.actionQueue = actionQueue;
+            this.moveQueue = moveQueue;
+            this.shootQueue = shootQueue;
             colliderRatio = 0.5f;
             scale = 1.0f;
             isGood = false;
@@ -65,32 +66,30 @@ namespace shmup.Enemies
         private void HandleActionQueue(GameTime gameTime)
         {
             double totalMs = gameTime.TotalGameTime.TotalMilliseconds;
-            if (previousMoveTime == null)
+            if (previousShootTime == null)
             {
-                previousMoveTime = totalMs;
+                previousShootTime = totalMs;
             }
-            EnemyAction currentAction = actionQueue[0];
-            Tuple<Vector2, bool> actionTuple = currentAction.Execute(position);
-            position = actionTuple.Item1;
 
-            // fire bullets
-            bool shoot = actionTuple.Item2;
-            if (shoot && currentAction != previousAction)
+            if (shootQueue.Count > 0 && totalMs - previousShootTime > shootQueue[0])
             {
                 FireBullet();
+                shootQueue.RemoveAt(0);
+                previousShootTime = totalMs;
             }
-            // move enemy
-            if (totalMs - previousMoveTime > actionQueue[0].Delay && actionQueue.Count > 1)
+            
+            if (moveQueue.Count > 0 && Vector2.Subtract(moveQueue[0], position).Length() < movementSpeed)
             {
-                actionQueue.RemoveAt(0);
-                previousMoveTime = totalMs;
+                moveQueue.RemoveAt(0);
             }
-            previousAction = currentAction;
+            Debug.WriteLine(Vector2.Subtract( moveQueue[0], position).Length());
+            Vector2 direction = Vector2.Normalize(moveQueue[0] - position);
+            position += direction * movementSpeed;
         }
 
         public void FireBullet()
         {
-            bulletManager.EnemyFireBullet(this);
+            bulletManager.EnemyFireBullet(this, movementSpeed + 1);
         }
     }
 }

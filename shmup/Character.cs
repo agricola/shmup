@@ -11,7 +11,7 @@ namespace shmup
 {
     abstract class Character : CollidableGameObject
     {
-        protected int movementSpeed = 5;
+        protected int movementSpeed = 2;
         protected BulletManager bulletManager;
         protected int health = 100;
 
