@@ -20,7 +20,7 @@ namespace shmup
             health -= damage;
             if (health <= 0)
             {
-                exists = false;
+                Destroy();
             }
         }
     }

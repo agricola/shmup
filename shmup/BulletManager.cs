@@ -52,7 +52,7 @@ namespace shmup
         {
             Bullet bullet = new Bullet();
             Vector2 position = character.CenterPosition;
-            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, goodSide, mapDimensions, 0.5f, 0.5f);
+            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, goodSide, mapDimensions, 0.5f, 1f);
             bullets.Add(bullet);
         }
 
@@ -77,6 +77,7 @@ namespace shmup
                     if (bullet.IsGood != character.IsGood)
                     {
                         character.TakeDamage(bullet.Damage);
+                        bullet.Destroy();
                     }
                 }
             }

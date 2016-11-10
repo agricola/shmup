@@ -42,7 +42,10 @@ namespace shmup
             position += direction * movementSpeed;
 
             // same line as in enemy
-            exists = (position.X < -Width || position.X > mapDimensions.X || position.Y < -Height || position.Y > mapDimensions.Y) ? false : true; 
+            if (exists)
+            {
+                exists = (position.X < -Width || position.X > mapDimensions.X || position.Y < -Height || position.Y > mapDimensions.Y) ? false : true;
+            }
         }
     }
 }

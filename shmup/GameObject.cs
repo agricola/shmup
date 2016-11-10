@@ -46,13 +46,6 @@ namespace shmup
                 return (int)(texture.Width * scale);
             }
         }
-        public Vector2 CenterPosition
-        {
-            get
-            {
-                return Vector2.Add(Position, new Vector2(Width / 2, Height / 2));
-            }
-        }
         public Vector2 Position
         {
             get
@@ -63,6 +56,18 @@ namespace shmup
             {
                 position = value;
             }
+        }
+        public Vector2 CenterPosition
+        {
+            get
+            {
+                return Vector2.Add(Position, new Vector2(Width / 2, Height / 2));
+            }
+        }
+
+        public void Destroy()
+        {
+            exists = false;
         }
 
         public void Draw(SpriteBatch spriteBatch)

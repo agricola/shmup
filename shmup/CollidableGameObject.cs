@@ -15,21 +15,21 @@ namespace shmup
         {
             get
             {
-                return (int)(texture.Height * colliderRatio);
+                return (int)(Height * colliderRatio);
             }
         }
         public int ColliderWidth
         {
             get
             {
-                return (int)(texture.Width * colliderRatio);
+                return (int)(Width * colliderRatio);
             }
         }
         public Vector2 ColliderPosition
         {
             get
             {
-                return position + new Vector2(Width / 2, Height / 2) - new Vector2(ColliderWidth, ColliderHeight);
+                return CenterPosition - new Vector2(ColliderWidth / 2, ColliderHeight / 2);
             }
         }
     }
