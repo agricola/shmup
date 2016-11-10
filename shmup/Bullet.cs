@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace shmup
 {
-    class Bullet : GameObject
+    class Bullet : CollidableGameObject
     {
         private int movementSpeed;
         private int damage = 100;
@@ -22,27 +22,27 @@ namespace shmup
             }
         }
 
-        public void Initialize(Texture2D texture, Vector2 position, Vector2 direction, int movementSpeed, bool goodSide, Vector2 mapDimensions)
+        public void Initialize(Texture2D texture, Vector2 position, Vector2 direction, int movementSpeed, bool isGood, Vector2 mapDimensions, float scale, float colliderRatio)
         {
             this.texture = texture;
+            this.scale = scale;
             this.position = position;
+            this.position = Vector2.Subtract(position, new Vector2(Width / 2, Height / 2));
             direction.Normalize();
             this.direction = direction;
             this.movementSpeed = movementSpeed;
             this.mapDimensions = mapDimensions;
-            this.isGood = goodSide;
+            this.isGood = isGood;
+            this.colliderRatio = colliderRatio;
             exists = true;
         }
 
         public void Update(GameTime gameTime)
         {
             position += direction * movementSpeed;
-            exists = (position.X < 0 || position.X > mapDimensions.X || position.Y < 0 || position.Y > mapDimensions.Y) ? false : true;
-        }
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            // same line as in enemy
+            exists = (position.X < -Width || position.X > mapDimensions.X || position.Y < -Height || position.Y > mapDimensions.Y) ? false : true; 
         }
     }
 }

@@ -73,7 +73,9 @@ namespace shmup
             // player related content
             Vector2 startPosition = new Vector2((GraphicsDevice.Viewport.Width / 2) - 16, GraphicsDevice.Viewport.Height - 50);
             Texture2D texture = Content.Load<Texture2D>("player");
-            player.Initialize(texture, startPosition, bulletManager);
+            float playerScale = 1.0f;
+            float colliderRatio = 0.125f;
+            player.Initialize(texture, startPosition, bulletManager, playerScale, colliderRatio);
             playerController.Initialize(Keys.Left, Keys.Right, Keys.Up, Keys.Down, Keys.Z, mapDimensions, player);
 
             // enemy related content

@@ -12,7 +12,7 @@ namespace shmup.Players
 {
     class PlayerController
     {
-        private const int Cooldown = 500;
+        private const int Cooldown = 100;
 
         private Player player;
 

@@ -14,6 +14,7 @@ namespace shmup
         protected Vector2 position;
         protected Vector2 direction;
         protected Vector2 mapDimensions;
+        protected float scale;
         protected bool exists;
         protected bool isGood;
 
@@ -35,14 +36,21 @@ namespace shmup
         {
             get
             {
-                return texture.Height;
+                return (int)(texture.Height * scale);
             }
         }
         public int Width
         {
             get
             {
-                return texture.Width;
+                return (int)(texture.Width * scale);
+            }
+        }
+        public Vector2 CenterPosition
+        {
+            get
+            {
+                return Vector2.Add(Position, new Vector2(Width / 2, Height / 2));
             }
         }
         public Vector2 Position
@@ -55,6 +63,11 @@ namespace shmup
             {
                 position = value;
             }
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
     }
 }

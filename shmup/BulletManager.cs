@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using shmup.Players;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,28 +48,30 @@ namespace shmup
             }
         }
 
-        public void FireBullet(Vector2 position, Vector2 direction)
+        public void FireBullet(Character character, Vector2 direction)
         {
             Bullet bullet = new Bullet();
-            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, goodSide, mapDimensions);
+            Vector2 position = character.CenterPosition;
+            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, goodSide, mapDimensions, 0.5f, 0.5f);
             bullets.Add(bullet);
         }
 
-        public void EnemyFireBullet(Vector2 position)
+        public void EnemyFireBullet(Character character)
         {
             Bullet bullet = new Bullet();
+            Vector2 position = character.CenterPosition;
             Vector2 direction = player.Position - position;
             direction.Normalize();
-            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, !goodSide, mapDimensions);
+            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, !goodSide, mapDimensions, 1.0f, 0.75f);
             bullets.Add(bullet);
         }
 
         public void CheckCollisionWithBullets(Character character)
         {
-            Rectangle characterCollider = new Rectangle((int)character.Position.X, (int)character.Position.Y, character.Width, character.Height);
+            Rectangle characterCollider = new Rectangle((int)character.ColliderPosition.X, (int)character.ColliderPosition.Y, character.ColliderWidth, character.ColliderHeight);
             foreach (var bullet in bullets)
             {
-                Rectangle bulletCollider = new Rectangle((int)bullet.Position.X, (int)bullet.Position.Y, bullet.Width, bullet.Height);
+                Rectangle bulletCollider = new Rectangle((int)bullet.ColliderPosition.X, (int)bullet.ColliderPosition.Y, bullet.ColliderWidth, bullet.ColliderHeight);
                 if (bulletCollider.Intersects(characterCollider))
                 {
                     if (bullet.IsGood != character.IsGood)

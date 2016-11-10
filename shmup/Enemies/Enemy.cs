@@ -35,6 +35,8 @@ namespace shmup.Enemies
             this.bulletManager = bulletManager;
             this.mapDimensions = mapDimensions;
             this.actionQueue = actionQueue;
+            colliderRatio = 0.5f;
+            scale = 1.0f;
             isGood = false;
             exists = true;
         }
@@ -75,7 +77,6 @@ namespace shmup.Enemies
             bool shoot = actionTuple.Item2;
             if (shoot && currentAction != previousAction)
             {
-                Debug.WriteLine("shoot");
                 FireBullet();
             }
             // move enemy
@@ -89,7 +90,7 @@ namespace shmup.Enemies
 
         public void FireBullet()
         {
-            bulletManager.EnemyFireBullet(position);
+            bulletManager.EnemyFireBullet(this);
         }
     }
 }
