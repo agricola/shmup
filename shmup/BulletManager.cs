@@ -52,17 +52,25 @@ namespace shmup
         {
             Bullet bullet = new Bullet();
             Vector2 position = character.CenterPosition;
-            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, goodSide, mapDimensions, 0.5f, 1f);
+            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, goodSide, mapDimensions, 0.5f, 1f, RecordBullets);
             bullets.Add(bullet);
         }
 
-        public void EnemyFireBullet(Character character, int bulletSpeed)
+        public void EnemyFireBullet<T>(Character character, int bulletSpeed) where T : Bullet, new()
         {
-            Bullet bullet = new Bullet();
+            T bullet = new T();
             Vector2 position = character.CenterPosition;
             Vector2 direction = Vector2.Normalize(player.Position - position);
-            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, !goodSide, mapDimensions, 1.0f, 0.75f);
+            bullet.Initialize(bulletTexture, position, direction, bulletSpeed, !goodSide, mapDimensions, 1.0f, 0.75f, RecordBullets);
             bullets.Add(bullet);
+        }
+
+        private void RecordBullets(List<Bullet> bullets)
+        {
+            foreach (var bullet in bullets)
+            {
+                this.bullets.Add(bullet);
+            }
         }
 
         public void CheckCollisionWithBullets(Character character)

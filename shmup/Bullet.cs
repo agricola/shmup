@@ -11,8 +11,11 @@ namespace shmup
 {
     class Bullet : CollidableGameObject
     {
-        private int movementSpeed;
+        protected int movementSpeed;
         private int damage = 100;
+
+        // remove in future maybe use events
+        protected Action<List<Bullet>> recordBullets; 
 
         public int Damage
         {
@@ -22,7 +25,16 @@ namespace shmup
             }
         }
 
-        public void Initialize(Texture2D texture, Vector2 position, Vector2 direction, int movementSpeed, bool isGood, Vector2 mapDimensions, float scale, float colliderRatio)
+        public void Initialize(
+            Texture2D texture,
+            Vector2 position,
+            Vector2 direction,
+            int movementSpeed,
+            bool isGood,
+            Vector2 mapDimensions,
+            float scale,
+            float colliderRatio,
+            Action<List<Bullet>> recordBullets)
         {
             this.texture = texture;
             this.scale = scale;
@@ -33,10 +45,11 @@ namespace shmup
             this.mapDimensions = mapDimensions;
             this.isGood = isGood;
             this.colliderRatio = colliderRatio;
+            this.recordBullets = recordBullets;
             exists = true;
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             position += direction * movementSpeed;
 

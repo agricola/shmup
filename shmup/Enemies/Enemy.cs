@@ -82,14 +82,13 @@ namespace shmup.Enemies
             {
                 moveQueue.RemoveAt(0);
             }
-            Debug.WriteLine(Vector2.Subtract( moveQueue[0], position).Length());
             Vector2 direction = Vector2.Normalize(moveQueue[0] - position);
             position += direction * movementSpeed;
         }
 
         public void FireBullet()
         {
-            bulletManager.EnemyFireBullet(this, movementSpeed + 1);
+            bulletManager.EnemyFireBullet<ScatterShot>(this, movementSpeed + 1);
         }
     }
 }
